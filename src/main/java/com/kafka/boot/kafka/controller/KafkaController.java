@@ -1,11 +1,9 @@
 package com.kafka.boot.kafka.controller;
 
+import com.kafka.boot.kafka.NaverNewsDto;
 import com.kafka.boot.kafka.service.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/kafka")
@@ -18,7 +16,7 @@ public class KafkaController {
     }
 
     @PostMapping
-    public String sendMessage(@RequestParam("message") String message) {
+    public String sendMessage(@RequestBody String message) {
         this.producer.sendMessage(message);
 
         return "success";

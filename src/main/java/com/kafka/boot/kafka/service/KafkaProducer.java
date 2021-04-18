@@ -1,12 +1,13 @@
 package com.kafka.boot.kafka.service;
 
+import com.kafka.boot.kafka.NaverNewsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class KafkaProducer {
-    private static final String TOPIC = "test2";
+    private static final String TOPIC = "book";
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
@@ -15,7 +16,7 @@ public class KafkaProducer {
     }
 
     public void sendMessage(String message) {
-        System.out.println(String.format("Produce message : %s", message));
+        //System.out.println(String.format("Produce message : %s", message));
         this.kafkaTemplate.send(TOPIC, message);
     }
 }
