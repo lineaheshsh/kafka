@@ -1,15 +1,25 @@
 package com.kafka.boot.kafka.service;
 
-import com.kafka.boot.kafka.dto.BicycleDto;
+import com.kafka.boot.kafka.dao.BicycleDao;
+import com.kafka.boot.kafka.vo.BicycleVO;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BicycleService {
 
+    @Autowired
+    private BicycleDao bicycleDao;
+
+    /**
+     * 공영 자전거 처리 로직
+     * @param message
+     */
     public void process(String message) {
+
         JSONParser parser = new JSONParser();
         try {
             JSONObject jsonObj = (JSONObject) parser.parse(message);
@@ -18,22 +28,21 @@ public class BicycleService {
 
                 if (payloadObj != null) {
 
-                    // bicycle Json 포맷 Dto로 변경(build 패턴)
-                    BicycleDto bicycleDto = BicycleDto.builder().num(Integer.parseInt(payloadObj.get("num").toString()))
-                                                                .location(payloadObj.get("location").toString())
-                                                                .detail_addr(payloadObj.get("detail_addr").toString())
-                                                                .rental_office_nm(payloadObj.get("rental_office_nm").toString())
-                                                                .date(payloadObj.get("date").toString())
-                                                                .latitude(payloadObj.get("latitude").toString())
-                                                                .longitude(payloadObj.get("longitude").toString())
-                                                                .lcd_cnt(payloadObj.get("lcd_cnt").toString())
-                                                                .qr_cnt(payloadObj.get("qr_cnt").toString())
-                                                                .lcdqr(payloadObj.get("lcdqr").toString())
-                                                                .build();
+                    BicycleVO bicycleVO = new BicycleVO();
+                    bicycleVO.setNum(Integer.parseInt(payloadObj.get("num").toString()));
+                    bicycleVO.setLocation(payloadObj.get("location").toString());
+                    bicycleVO.setDetail_addr(payloadObj.get("detail_addr").toString());
+                    bicycleVO.setRental_office_nm(payloadObj.get("rental_office_nm").toString());
+                    bicycleVO.setDate(payloadObj.get("date").toString());
+                    bicycleVO.setLatitude(payloadObj.get("latitude").toString());
+                    bicycleVO.setLongitude(payloadObj.get("longitude").toString());
+                    bicycleVO.setLcd_cnt(payloadObj.get("lcd_cnt").toString());
+                    bicycleVO.setQr_cnt(payloadObj.get("qr_cnt").toString());
+                    bicycleVO.setLcdqr(payloadObj.get("lcdqr").toString());
 
-                    System.out.println("bicycleDto :: " + bicycleDto);
+                    System.out.println("bicycleVO :: " + bicycleVO);
 
-
+                    bicycleDao.insertBicycle(bicycleVO);
                 }
             }
 

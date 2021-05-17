@@ -35,7 +35,7 @@ public class Consumer {
 //        newsService.insertNews(newsVO);
     }
 
-    @KafkaListener(topics = "public.bicycle_rental_office_info", groupId = "public.bicycle_rental_office_info7")
+    @KafkaListener(topics = "public.bicycle_rental_office_info", groupId = "public.bicycle_rental_office_info9")
     public void bicycleConsumer(@Payload String message) {
         bicycleService.process(message);
     }
